@@ -1,5 +1,7 @@
 <launch>
 	<node pkg="onboard_controller" type="onboard_controller_node" name="onboard_controller_node" output="screen">
         	<param name="direction_x" type="double" value="1"/>
-        <param name="direction_y" type="double" value="1"/>
+        	<param name="direction_y" type="double" value="1"/>
+			<param name="test" type="bool" value="False"/>
+	</node>
 </launch>

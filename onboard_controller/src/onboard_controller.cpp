@@ -30,6 +30,13 @@ void OnboardController::run()
 {
 
     // go to set_aptitude and then run tracking
+    bool Test;
+    ros::param::get("test", Test);
+//    cout<<Test<<endl;
+    if(Test)
+    {
+        test();
+    }
     double set_aptitude = 4;
     while (ros::ok())
     {
@@ -218,4 +225,95 @@ void OnboardController::Update_Target_Velocity(double vx, double vy, double vz)
     velocity.linear.y = vy;
     velocity.linear.z = vz;
     velocity_pub.publish(velocity);
+}
+
+void OnboardController::test()
+{
+
+    // go to set_aptitude and then run tracking
+    double set_aptitude = 4;
+    double set_x1 = 1.0;
+    double set_x2 = -1.0;
+    double set_y1 = 1.0;
+    double set_y2 = -1.0;
+
+    while (ros::ok())
+    {
+        // ROS_INFO("current pose: (%f, %f, %f)",current_pose.pose.position.x,current_pose.pose.position.y,current_pose.pose.position.z);
+        Update_Target_Pose(0, 0, set_aptitude);
+        if (fabs(current_pose.pose.position.z - set_aptitude) < 0.1)
+        {
+            ROS_INFO("get target aptitude");
+            break;
+        }
+        ros::spinOnce();
+        rate.sleep();
+    }
+
+    //go to the set position(1,0,4)
+    while (ros::ok())
+    {
+        // ROS_INFO("current pose: (%f, %f, %f)",current_pose.pose.position.x,current_pose.pose.position.y,current_pose.pose.position.z);
+        Update_Target_Pose(set_x1, 0, set_aptitude);
+        if (fabs(current_pose.pose.position.x - set_x1) < 0.1)
+        {
+            ROS_INFO("get target position (1,0,4)");
+            break;
+        }
+        ros::spinOnce();
+        rate.sleep();
+    }
+
+    while (ros::ok())
+    {
+        // ROS_INFO("current pose: (%f, %f, %f)",current_pose.pose.position.x,current_pose.pose.position.y,current_pose.pose.position.z);
+        Update_Target_Pose(set_x2, 0, set_aptitude);
+        if (fabs(current_pose.pose.position.x - set_x2) < 0.1)
+        {
+            ROS_INFO("get target position (-1,0,4)");
+            break;
+        }
+        ros::spinOnce();
+        rate.sleep();
+    }
+
+    while (ros::ok())
+    {
+        // ROS_INFO("current pose: (%f, %f, %f)",current_pose.pose.position.x,current_pose.pose.position.y,current_pose.pose.position.z);
+        Update_Target_Pose(set_x2, set_y1, set_aptitude);
+        if (fabs(current_pose.pose.position.y - set_y1) < 0.1)
+        {
+            ROS_INFO("get target position (-1,1,4)");
+            break;
+        }
+        ros::spinOnce();
+        rate.sleep();
+    }
+
+    while (ros::ok())
+    {
+        // ROS_INFO("current pose: (%f, %f, %f)",current_pose.pose.position.x,current_pose.pose.position.y,current_pose.pose.position.z);
+        Update_Target_Pose(set_x2, set_y2, set_aptitude);
+        if (fabs(current_pose.pose.position.y - set_y2) < 0.1)
+        {
+            ROS_INFO("get target position (-1,-1,4)");
+            // break;
+        }
+        ros::spinOnce();
+        rate.sleep();
+    }
+
+    // while (ros::ok())
+    // {
+    //     // ROS_INFO("current pose: (%f, %f, %f)",current_pose.pose.position.x,current_pose.pose.position.y,current_pose.pose.position.z);
+    //     Update_Target_Pose(0, 0, 0);
+    //     double distance = current_pose.pose.position.x * current_pose.pose.position.x + current_pose.pose.position.y * current_pose.pose.position.y + current_pose.pose.position.z * current_pose.pose.position.z;
+    //     if (fabs(distance) < 0.1)
+    //     {
+    //         ROS_INFO("get target position (0,0,0)");
+    //         break;
+    //     }
+    //     ros::spinOnce();
+    //     rate.sleep();
+    // }
 }

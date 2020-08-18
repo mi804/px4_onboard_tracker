@@ -37,6 +37,7 @@ public:
     void Update_Target_Pose(double x = 0, double y = 0, double z = 2, double yaw = 0);
     void Update_Target_Velocity(double vx = 0, double vy = 0, double vz = 0);
     void run();
+    void test();
     OnboardController(ros::NodeHandle nh, ros::Rate rate_);
     ~OnboardController();
 };
